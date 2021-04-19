@@ -1,0 +1,57 @@
+{
+    "dataSource": {
+        "dataSourceType": "json",
+        "filename": "http://172.16.4.130/api/relatorio/ResultRelatorio/2"
+    },
+    "slice": {
+        "reportFilters": [
+            {
+                "uniqueName": "IdCampanha"
+            },
+            {
+                "uniqueName": "IdEnvio"
+            }
+        ],
+        "rows": [
+            {
+                "uniqueName": "NomeCampanha"
+            },
+            {
+                "uniqueName": "NomeFluxo"
+            },
+            {
+                "uniqueName": "Nome"
+            },
+            {
+                "uniqueName": "EC"
+            },
+            {
+                "uniqueName": "Resposta"
+            },
+            {
+                "uniqueName": "Finalizado"
+            },
+            {
+                "uniqueName": "Mensagem"
+            }
+        ],
+        "columns": [
+            {
+                "uniqueName": "Measures"
+            }
+        ],
+        "measures": [
+            {
+                "uniqueName": "IdEnvio",
+                "aggregation": "count"
+            }
+        ]
+    },
+    "options": {
+        "grid": {
+            "type": "flat",
+            "showTotals": "off",
+            "showGrandTotals": "off"
+        }
+    }
+}

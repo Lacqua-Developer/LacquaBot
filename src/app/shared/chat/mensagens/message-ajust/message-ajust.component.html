@@ -1,0 +1,82 @@
+<div class="message other-message lnbr chat-history" [class]="sentido" disabled>
+  <div class="message-data">
+    <div class="message-data-time">
+      <div
+        style="
+          text-align: left;
+          color: blue;
+          font-weight: 500;
+          font-size: 0.8em;
+        "
+      >
+        {{ dataMsg }}
+      </div>
+      <div
+        style="
+          text-align: right;
+          color: blue;
+          font-weight: 500;
+          font-size: 0.8em;
+        "
+      >
+        {{ EnvPor }}
+      </div>
+    </div>
+  </div>
+
+
+  <a *ngIf="TipoAnexo == 'application'" [href]="AppOk">
+    <img [src]="imageDoc" />
+  </a>
+  <img
+    Class="imgchat"
+    *ngIf="TipoAnexo == 'image'"
+    [src]="imageOk"
+    (error)="onImgError($event)"
+  />
+  <a
+    *ngIf="TipoAnexo == 'video' || TipoAnexo == 'audio'"
+    [href]="TipoAnexo == 'video' ? videoOk : audioOk"
+    target="_blank"
+  >
+    <img
+      Class="imgchat"
+      *ngIf="TipoAnexo == 'video' || TipoAnexo == 'audio'"
+      [src]="MediaImg"
+    />
+  </a>
+
+  <p [innerHTML]="Mensagem"></p>
+
+  <div
+  style="width: 100%; text-align: right; "
+>
+<div class="statusEntrega">
+  <span class="material-icons" *ngIf="enviada" style="color: green">
+    mark_email_read
+  </span>
+  <span
+    class="material-icons"
+    [matTooltip]="menssagemerro"
+    *ngIf="erro"
+    style="color: red"
+    >warning</span
+  >
+  <span style="color: blue; font-weight: 500; font-size: 0.8em">
+    {{ ChipContato }}
+  </span>
+</div>
+
+
+</div>
+</div>
+
+<!--
+
+
+image
+audio
+video
+application
+
+-->
