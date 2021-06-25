@@ -1,10 +1,10 @@
 export const environment = {
   production: true,
-  api: 'http://172.16.4.130/api/',
-  app: 'http://172.16.4.90/',
-  servWhats: 'http://172.16.4.130:3333/',
+  api: 'http://localhost:58104/api/',
+  app: 'http://localhost:4200/',
+  servWhats: 'http://localhost:3333/',
   debug: false,
   reportPath: './assets/public/reports/',
-  wsServer: 'ws://172.16.4.90:3334'
+  wsServer: 'ws://localhost:3334'
 
 };

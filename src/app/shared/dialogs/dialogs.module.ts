@@ -32,6 +32,8 @@ import { PlayMediaComponent } from './play-media/play-media.component'
             TransfereAtendimentoComponent,
             ClienteDetalheComponent,
             SugestaoDialogComponent,
-            MatSelectModule]
+            MatSelectModule,
+            PlayMediaComponent
+          ]
 })
 export class DialogsModule { }

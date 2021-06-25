@@ -1,3 +1,4 @@
+import { DialogDataMedia } from './../../../models/dialogs.model';
 import { HttpEvent } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import {
@@ -22,6 +23,7 @@ import { PlayMediaComponent } from 'src/app/shared/dialogs/play-media/play-media
 export class MessageAjustComponent implements OnInit, OnChanges {
   constructor(private dialog: MatDialog) {}
 
+  @Input() telefone: string;
   @Input() msgChat: string;
   @Input() sentido: string;
   @Input() ImagemChat: string;
@@ -36,6 +38,7 @@ export class MessageAjustComponent implements OnInit, OnChanges {
 
   public MediaImg = environment.app + 'assets/Images/ImageVideo.png';
   public imageDoc = environment.app + 'assets/Images/Docs.png';
+  public DataMedia: DialogDataMedia;
   public Mensagem: string;
   public AppOk = '';
   public imageOk = '';
@@ -52,51 +55,61 @@ export class MessageAjustComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+   // console.log('Entrou na Msg:',this.msgChat )
     this.Mensagem =
       this.msgChat?.length > 0 ? this.msgChat.replace(/\\n/g, '<br/>') : '';
-
+  this.DataMedia
     if (this.ImagemChat?.length > 0) {
       if (this.ImagemChat != null) {
         if (this.sentido == 'Saida') {
           switch (this.TipoAnexo) {
             case 'image':
               this.imageOk =
-                environment.api + 'DocFile/GetFile?fileName='   + this.ImagemChat;
+              environment.servWhats + 'getAttach?number=' + this.telefone + '&file=' + this.ImagemChat;
               break;
             case 'audio':
               this.audioOk =
-              environment.api + 'DocFile/GetFile?fileName=' +  this.ImagemChat;
+              environment.servWhats + 'getAttach?number=' + this.telefone + '&file=' +  this.ImagemChat;
+
               break;
             case 'video':
               this.videoOk =
-              environment.api + 'DocFile/GetFile?fileName=' +  this.ImagemChat;
+              environment.servWhats + 'getAttach?number=' + this.telefone + '&file=' +  this.ImagemChat;
+
               break;
             case 'application':
               this.AppOk =
-              environment.api + 'DocFile/GetFile?fileName=' +  this.ImagemChat;
+              environment.servWhats + 'getAttach?number=' + this.telefone + '&file=' +  this.ImagemChat;
               break;
           }
         } else {
           switch (this.TipoAnexo) {
             case 'image':
               this.imageOk =
-                environment.servWhats + 'download/' + this.ImagemChat;
+              environment.servWhats + 'getMedia?number=' + this.telefone + '&file=' + this.ImagemChat;
               break;
             case 'audio':
               this.audioOk =
-                environment.servWhats + 'download/' + this.ImagemChat;
+              environment.servWhats + 'getMedia?number=' + this.telefone + '&file=' + this.ImagemChat;
+
+              console.log('DadosMedia',this.DataMedia);
               break;
             case 'video':
               this.videoOk =
-                environment.servWhats + 'download/' + this.ImagemChat;
+              environment.servWhats + 'getMedia?number=' + this.telefone + '&file=' + this.ImagemChat;
+
+              console.log('DadosMedia',this.DataMedia);
               break;
             case 'application':
+
               this.AppOk =
-                environment.servWhats + 'download/' + this.ImagemChat;
-              break;
+              environment.servWhats + 'getMedia?number=' + this.telefone + '&file=' +  this.ImagemChat;
+
+             break;
           }
         }
       }
+
     }
   }
 

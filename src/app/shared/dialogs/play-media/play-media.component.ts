@@ -1,5 +1,5 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { DialogDataMedia } from '../../models/dialogs.model';
 
 @Component({
@@ -17,6 +17,8 @@ export class PlayMediaComponent  {
     console.log('Media:', data);
   }
 
-  public Data: DialogDataMedia;
+
+
+  @Input() Data: DialogDataMedia;
 
 }

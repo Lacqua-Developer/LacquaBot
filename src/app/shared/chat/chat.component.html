@@ -3,7 +3,7 @@
 >
   <mat-grid-list class="gridtela" cols="6" rowHeight="550px" >
     <mat-grid-tile colspan="2">
-      <app-contato-lista TipoChat="1" (contatoSel)="selecionaContato($event)"></app-contato-lista>
+      <app-contato-lista [TipoChat]="TipoChat" (contatoSel)="selecionaContato($event)"></app-contato-lista>
     </mat-grid-tile>
     <mat-grid-tile colspan="4">
 
@@ -12,7 +12,7 @@
           [currentsessao]="IdContatoSelecao"
           [contato]="ContatoSelecao"
           [contatoSelecao]="ContatoSelecao"
-          TipoChat="1" ></app-historico-mensagem>
+          [TipoChat]="TipoChat" ></app-historico-mensagem>
 
 
 

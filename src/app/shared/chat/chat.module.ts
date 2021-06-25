@@ -9,20 +9,19 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs'
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   declarations: [ChatComponent],
-  imports: [
-    CommonModule,
-    ChatListaModule,
-    ChatMensagensModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatTabsModule,
-    SharedComponentsModule,
-    MatGridListModule],
-  exports:[ChatComponent,
-
-  ]
+  imports: [ CommonModule,
+             ChatListaModule,
+             ChatMensagensModule,
+             MatToolbarModule,
+             MatTooltipModule,
+             MatDialogModule,
+             MatTabsModule,
+             SharedComponentsModule,
+             MatButtonModule,
+             MatGridListModule],
+  exports:[ChatComponent]
 })
 export class ChatModule { }

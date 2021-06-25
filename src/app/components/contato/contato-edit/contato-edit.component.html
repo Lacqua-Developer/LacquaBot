@@ -1,0 +1,52 @@
+<ol class="breadcrumb float-right">
+  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+  <li class="breadcrumb-item active">Cadastro de Contatos</li>
+</ol>
+<div class="card">
+  <div class="header">
+    <h2 class="title">Cadastro de Contatos Detail</h2>
+  </div>
+  <div class="content">
+    <div *ngIf="feedback" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+    <form *ngIf="contato" #editForm="ngForm" (ngSubmit)="save()">
+    
+      <div class="form-group">
+        <label>Id</label>
+        {{contato.IdContato || 'n/a'}} 
+      </div>
+    
+      <div class="form-group">
+        <label for="NomeInformado">Nome</label>
+        <input [(ngModel)]="contato.NomeInformado" id="NomeInformado" name="NomeInformado" class="form-control">
+      </div>
+    
+      <div class="form-group">
+        <label for="Documento">CPF</label>
+        <input [(ngModel)]="contato.Documento" id="Documento" name="Documento" class="form-control">
+      </div>
+    
+      <div class="form-group">
+        <label for="Codigo">Chave</label>
+        <input [(ngModel)]="contato.Codigo" id="Codigo" name="Codigo" class="form-control">
+      </div>
+    
+      <div class="form-group">
+        <label for="Telefone">Telefone</label>
+        <input [(ngModel)]="contato.Telefone" id="Telefone" name="Telefone" class="form-control">
+      </div>
+    
+      <div class="form-group">
+        <label for="IdWhatsApp">IdWhatsApp</label>
+        <input [(ngModel)]="contato.IdWhatsApp" id="IdWhatsApp" name="IdWhatsApp" class="form-control">
+      </div>
+    
+      <div class="form-group">
+        <label for="Email">Email</label>
+        <input [(ngModel)]="contato.Email" id="Email" name="Email" class="form-control">
+      </div>
+    
+      <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid">Save</button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </form>
+  </div>
+</div>

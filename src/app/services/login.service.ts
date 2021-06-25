@@ -1,3 +1,4 @@
+import { Store } from '@ngrx/store';
 import { RelatorioService } from './relatorio.service';
 import { Relatorio } from '../models/relatorio';
 import { UtilService } from './util.service';
@@ -16,7 +17,8 @@ export class LoginService {
   constructor(private http: HttpClient,
               private cs: ConfigService ,
               private util: UtilService,
-              private rels: RelatorioService) {}
+              private rels: RelatorioService,
+              private store: Store) {}
 
   public usr = new Usuario();
   public RetornaUsr = new AsyncSubject<Usuario>();
@@ -37,6 +39,8 @@ export class LoginService {
       this.usr
     );
     ret.subscribe((u) => {
+
+
       this.usr = u;
       this.usr.SessionWhats = Sessao;
       this.cs.RetConfig.subscribe((c) => {

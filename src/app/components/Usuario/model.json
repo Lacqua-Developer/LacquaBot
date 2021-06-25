@@ -1,0 +1,40 @@
+{
+  "title": "Cadastro de Usuarios",
+  "entity": "Usuario",
+  "api": {
+    "url": "http://localhost:58104/api/usuario"
+  },
+  "filter": [
+    "NomeUsuario"
+  ],
+  "fields": [
+    {
+      "name": "IdUsr",
+      "label": "Id",
+      "isId": true,
+      "readonly": true,
+      "type": "number"
+    },
+    {
+      "name": "NomeUsuario",
+      "type": "string",
+      "label": "Nome"
+    },
+    {
+      "name": "Permissao",
+      "type": "string",
+      "label": "Permissao"
+    },
+    {
+      "name": "Login",
+      "type": "string",
+      "label": "Login"
+    },
+    {
+      "name": "Celular",
+      "type": "string",
+      "label": "Celular"
+    }
+
+  ]
+}

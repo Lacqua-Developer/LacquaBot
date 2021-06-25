@@ -28,58 +28,13 @@
 
   </div>
 
-  <div class="list">
-    <ul>
-      <li
-        #messageEl
-        class="clearfix"
-        *ngFor="let c of contatos | myFilter: srcCont"
-        [attr.data-message-id]="c.IdContato"
-        [attr.data-message-tel]="c.Telefone"
-        (click)="onClick(messageEl)"
-      >
 
-        <app-image-chat
-          imgP="{{ c.IdWhatsApp }}"
-          self="{{ c.ImageProfile }}"
-          [session]="usr.Config.Apelido"
-        ></app-image-chat>
-        <div
-          class="about"
-          [matTooltip]="c.Status =='Bloqueado' ? 'Bloqueado' : ''"
-        >
-          <div
-            class="name"
-            [matTooltip]="'Telefone: ' + c.Telefone"
-            [ngStyle]="{'text-decoration': c.Status=='Bloqueado' ? 'line-through' : 'solid'}"
-          >
-            {{ c.NomeInformado ? c.NomeInformado : c.NomeRetornado }}
-          </div>
-          <div class="status">
-            <span><b>{{ c.QtdeNLido }}</b> Não Lidas</span>
-            <div
-              class="StSessao"
-              [matTooltip]="c.Sessao?.Usuario?.NomeUsuario"
-              *ngIf="TipoChat != '3'"
-            >
-              <mat-icon *ngIf="c.Sessao?.IdSession == 0">lock</mat-icon>
-              <mat-icon
-                *ngIf="
-                  c.Sessao?.IdSession > 0 && c.Sessao?.Usuario_IdUsuario > 0
-                "
-                >lock_open</mat-icon
-              >
-              <mat-icon
-                style="color: #d12121"
-                *ngIf="
-                  c.Sessao?.IdSession > 0 && c.Sessao?.Usuario_IdUsuario == 0
-                "
-                >lock_clock</mat-icon
-              >
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
+
+  <div  class="list">
+
+    <app-default [lista]="storeChat" [srcCont]="srcCont"  [cfg]="configAtivo" *ngIf="ico == 0"></app-default>
+    <app-lista-seguimento [lista]="storeChat"  [srcCont]="srcCont" [cfg]="configAtivo" *ngIf="ico == 1"></app-lista-seguimento>
+    <app-lista-chip  [lista]="storeChat"  [srcCont]="srcCont" [cfg]="configAtivo" *ngIf="ico == 2"></app-lista-chip>
+
   </div>
 </div>

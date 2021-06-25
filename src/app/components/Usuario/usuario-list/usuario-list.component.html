@@ -1,0 +1,50 @@
+<div class="card">
+  <div class="header">
+    <h2 class="title">Cadastro de Usuarios</h2>
+  </div>
+  <div class="content crud">
+    <form #f="ngForm">
+
+      <div class="form-group">
+        <label for="NomeUsuario">Nome:</label>
+        <input [(ngModel)]="filter.NomeUsuario" id="NomeUsuario" name="NomeUsuario" class="form-control">
+      </div>
+
+      <button (click)="search()" [disabled]="!f?.valid" class="btn btn-primary">Search</button>
+      <a [routerLink]="['../usuarios', 'new' ]" class="btn btn-default">New</a>
+    </form>
+  </div>
+</div>
+<div class="card crud" *ngIf="usuarioList.length > 0">
+  <div *ngIf="feedback" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+  <div class="table-responsive">
+    <table class="table table-centered table-hover mb-0" id="datatable">
+      <thead>
+        <tr>
+          <th class="border-top-0" scope="col">Id</th>
+          <th class="border-top-0" scope="col">Nome</th>
+          <th class="border-top-0" scope="col">Status</th>
+          <th class="border-top-0" scope="col">Permissao</th>
+          <th class="border-top-0" scope="col">Login</th>
+          <th class="border-top-0" scope="col">Celular</th>
+          <th class="border-top-0" scope="col" style="width:120px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of usuarioList" [class.active]="item === selectedUsuario">
+
+          <td>{{item.IdUsr}}</td>
+          <td>{{item.NomeUsuario}}</td>
+          <td>{{item.Status}}</td>
+          <td>{{item.NomePermissao}}</td>
+          <td>{{item.Login}}</td>
+          <td>{{item.Celular}}</td>
+          <td style="white-space: nowrap">
+            <a [routerLink]="['../usuarios', item.IdUsr ]" class="btn btn-secondary">Edit</a>&nbsp;
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

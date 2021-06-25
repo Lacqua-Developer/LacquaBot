@@ -1,3 +1,8 @@
+import { ResetChatAtivos } from './../../../store/actions/chat-ativos.actions';
+import { ResetChatContatos } from './../../../store/actions/chat-contatos.actions';
+import { ResetChatEspera } from './../../../store/actions/chat-espera.actions';
+import { ChatState } from 'src/app/store/interfaces/states';
+import { Store } from '@ngrx/store';
 import { TransfereAtendimentoComponent } from './../../dialogs/transfere-atendimento/transfere-atendimento.component';
 import { ClienteDetalheComponent } from './../../dialogs/cliente-detalhe/cliente-detalhe.component';
 import { SugestaoDialogComponent } from './../../dialogs/texto-sugestao/texto-sugestao.component';
@@ -11,21 +16,16 @@ import { Usuario } from '../../../models/usuario';
 import { LoginService } from '../../../services/login.service';
 import { ChatMenssagem } from '../../../models/ChatMenssagem';
 import { Contato } from '../../../models/contato';
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChatMessageState } from './../../../store/interfaces/states';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { ChatService } from '../../../services/chat.service';
 import { Config } from 'src/app/models/config';
 import { Input } from '@angular/core';
-import {
-  MatDialog,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Sessao } from 'src/app/models/sessao';
 import { TPChat } from 'src/app/models/tipo-chat';
-
+import { AppState } from 'src/app/store/app-reducers';
 
 @Component({
   selector: 'app-historico-mensagem',
@@ -33,17 +33,8 @@ import { TPChat } from 'src/app/models/tipo-chat';
   styleUrls: ['./mensagens.component.scss'],
 })
 export class HistoricoMensagemComponent implements OnInit, OnDestroy {
-  constructor(
-    private chatService: ChatService,
-    private ls: LoginService,
-    private config: ConfigService,
-    private core: CoreService,
-    private util: UtilService,
-    private dialog: MatDialog
-  ) {
-    this.ls.RetornaUsr.subscribe((u) => (this.usr = u));
-  }
-
+  public storage: Observable<ChatState>;
+  private storeChat: string = 'default';
   private routeSub: Subscription[] = [];
   public MsgText = '';
   public imgcli: string = null;
@@ -66,73 +57,107 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
   @Input() contato: Contato = new Contato();
   @Input() chipSelecionado: boolean;
   @Input() contatoSelecao: Contato;
-  @Input() TipoChat: number;
+  @Input() TipoChat: string = '-1';
   @Input() events: Observable<Contato>;
 
   private eventsSubscription: Subscription;
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   this.util.debug('Sessao Modificada:', this.currentsessao);
-  //   this.core.CurrentIdContato = this.currentsessao;
-  //   this.contAtu = 40;
-  //   this.ngOnInit();
-  // }
+  constructor(
+    private chatService: ChatService,
+    private ls: LoginService,
+    private config: ConfigService,
+    private core: CoreService,
+    private util: UtilService,
+    private dialog: MatDialog,
+    private store: Store<ChatMessageState>,
+    private storeApp: Store<AppState>
+
+  ) {  }
 
   ngOnInit(): void {
-    this.ConversaSelecao = [];
-    this.eventsSubscription = this.events.subscribe((id) => {
-      this.util.debug('Conversa:', id);
 
-      this.currentsessao = id.IdContato;
-      this.core.TipoChat = this.TipoChat;
-      this.core.CurrentIdContato = id.IdContato;
-      this.core.CurrentContato = id;
-      this.core.TipoChatClass = new TPChat(this.TipoChat, id.IdContato);
-      this.core.IniciaConv(this.usr, this.TipoChat);
-      this.contatoSelecao = id;
+     this.util.debug('Tipo Chat:',  this.TipoChat);
+    switch (this.TipoChat.trim()) {
+      case '1':
+        this.storeChat = 'chatContatos';
 
-      switch (this.TipoChat.toString()) {
-        case '1':
-          const tp1 = this.core.VerificaConversasEsperaSbj.subscribe((conv) => {
-            this.util.debug('Popula Espera:', conv.length);
-            this.convRet(conv);
-          });
-          this.util.debug('tp1:', tp1);
-          break;
+         this.util.debug('Subscribe:', this.storeChat);
+        this.store.select<any>('chatContatos').subscribe((state) => {
+           this.util.debug('Retorno Subs:',  state);
+          if (state) {
+             this.util.debug('state: ', state);
+             this.util.debug('Resultado: ', state['loaded'] == true);
+            if (state['contatoAtivo'] != null) {
+              this.contato = state['contatoAtivo'];
+              this.contatoSelecao = state['contatoAtivo'];
 
-        case '2':
-          const tp2 = this.core.VerificaConversasAtivosSbj.subscribe((conv) => {
-            this.util.debug('Popula Ativos:', conv.length);
-            this.convRet(conv);
-          });
-          this.util.debug('tp2:', tp2);
-          break;
+               this.util.debug('Conversas:', this.contato.Conversa);
 
-        case '3':
-          const tp3 = this.core.VerificaConversasContatosSbj.subscribe(
-            (conv) => {
-              this.util.debug('Popula Contatos:', conv.length);
-              this.convRet(conv);
+              const conv: Conversa[] = this.contato.Conversa;
+              this.itemchip = this.NroSaida;
+              this.ConversaSelecao = conv;
             }
-          );
-          this.util.debug('tp3:', tp3);
-          break;
-        default:
-          const def = this.core.VerificaConversasAtivosSbj.subscribe((conv) => {
-            this.util.debug('Popula Ativos - Default:', conv.length);
-            this.convRet(conv);
-          });
-          this.util.debug('tp Defaul:', def);
-          break;
-      }
-      this.refresh();
-    });
+          }
+        });
+        break;
+      case '2':
+        this.storeChat = 'chatAtivos';
 
-    this.config.RetConfig.subscribe((c) => (this.conf = c));
-    this.chatService.Usrs().subscribe((u) => {
-      this.util.debug('Users:', u);
-      this.usrs = u;
-    });
+         this.util.debug('Subscribe:', this.storeChat);
+        this.store.select<any>('chatAtivos').subscribe((state) => {
+           this.util.debug('Retorno Subs:',  state);
+          if (state) {
+             this.util.debug('state: ', state);
+             this.util.debug('Resultado: ', state['loaded'] == true);
+            if (state['contatoAtivo'] != null) {
+              this.contato = state['contatoAtivo'];
+              this.contatoSelecao = state['contatoAtivo'];
+
+               this.util.debug('Conversas:', this.contato.Conversa);
+
+              const conv: Conversa[] = this.contato.Conversa;
+              this.itemchip = this.NroSaida;
+              this.ConversaSelecao = conv;
+            }
+          }
+        });
+        break;
+      case '3':
+        this.storeChat = 'chatEspera';
+         this.util.debug('Subscribe:', this.storeChat);
+        this.store.select<any>('chatEspera').subscribe((state) => {
+           this.util.debug('Retorno Subs:',  state);
+          if (state) {
+             this.util.debug('state: ', state);
+             this.util.debug('Resultado: ', state['loaded'] == true);
+            if (state['contatoAtivo'] != null) {
+              this.contato = state['contatoAtivo'];
+              this.contatoSelecao = state['contatoAtivo'];
+
+               this.util.debug('Conversas:', this.contato.Conversa);
+
+              const conv: Conversa[] = this.contato.Conversa;
+              this.itemchip = this.NroSaida;
+              this.ConversaSelecao = conv;
+            }
+          }
+        });
+
+        break;
+
+      default:
+         this.util.debug('Não entrou no switch', this.TipoChat);
+        break;
+    }
+
+    this.ls.RetornaUsr.subscribe((u) => (this.usr = u));
+    this.conf = this.usr.Configs;
+
+    this.storage = this.store.select<any>(this.storeChat);
+
+
+    console.log('Configs',this.conf);
+
 
     window.onbeforeunload = () => this.ngOnDestroy();
   }
@@ -157,6 +182,7 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
     this.chatService
       .getContatoId(this.contatoSelecao.IdContato.toString())
       .subscribe((cont) => {
+         this.util.debug('Conversa: ', cont.Conversa);
         const conv: Conversa[] =
           cont.Conversa.length > 0 ? cont.Conversa : new Conversa[0]();
         this.itemchip = this.NroSaida;
@@ -194,7 +220,7 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
       this.EnviaMsg();
     }
 
-    if (event.keyCode === 51) {
+    if (event.ctrlKey && event.keyCode === 51) {
       let configTexto = this.NroSaida > 0 ? this.NroSaida : this.usr.Config.ID;
 
       if (configTexto > 0) {
@@ -275,14 +301,40 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
   };
 
   fechaSessao(): void {
-    this.chatService
-        .FechaSessao(this.contatoSelecao).subscribe(() => {
+    this.chatService.FechaSessao(this.contatoSelecao).subscribe(() => {
       alert('Sessão Fechada!');
+
+
+
+
+      switch (this.TipoChat.trim()) {
+        case '1':
+          this.storeChat = 'chatContatos';
+
+          this.storeApp.dispatch(ResetChatContatos());
+
+          break;
+        case '2':
+          this.storeChat = 'chatAtivos';
+          this.storeApp.dispatch(ResetChatAtivos());
+
+          break;
+        case '3':
+
+          this.storeApp.dispatch(ResetChatEspera());
+          break;
+
+        default:
+           this.util.debug('Não entrou no switch', this.TipoChat);
+          break;
+      }
+
+
       this.contato = new Contato();
       this.contatoSelecao = new Contato();
       this.ConversaSelecao = [];
       this.currentsessao = 0;
-      console.log('Ckeck listas');
+       this.util.debug('Ckeck listas');
       this.core.CurrentIdContato = 0;
       this.core.verificaEspera();
       this.core.verificaAtivos(this.usr.IdUsr.toString());
@@ -320,16 +372,17 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
       data: {
         contato: this.contatoSelecao,
         usuarios: this.usr,
+        tipoChat: this.TipoChat
       },
     });
-    if (this.TipoChat == 3) {
+    if (this.TipoChat == '3') {
       dialogRef.afterClosed().subscribe((result) => {
         this.util.debug('The dialog was closed', result);
         this.contato = new Contato();
         this.contatoSelecao = new Contato();
         this.ConversaSelecao = [];
         this.currentsessao = 0;
-        console.log('Ckeck listas');
+         this.util.debug('Ckeck listas');
         this.core.CurrentIdContato = 0;
         this.core.verificaEspera();
         this.core.verificaAtivos(this.usr.IdUsr.toString());
@@ -393,7 +446,7 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
       s.closed = true;
     });
 
-    this.eventsSubscription.unsubscribe();
+    //this.eventsSubscription.unsubscribe();
 
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

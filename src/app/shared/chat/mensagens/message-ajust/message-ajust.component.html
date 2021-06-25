@@ -1,4 +1,4 @@
-<div class="message other-message lnbr chat-history" [class]="sentido" disabled>
+<div class="message other-message lnbr chat-history" [ngClass]="[sentido, TipoAnexo]"  disabled>
   <div class="message-data">
     <div class="message-data-time">
       <div
@@ -9,7 +9,7 @@
           font-size: 0.8em;
         "
       >
-        {{ dataMsg }}
+        {{ dataMsg | date: "dd/MM/yyyy HH:mm:ss" }}
       </div>
       <div
         style="
@@ -23,19 +23,46 @@
       </div>
     </div>
   </div>
+  <div *ngIf="TipoAnexo == 'application'" >
+      <div style="text-align: left;color: aqua;">
+        <a [href]="AppOk">
+
+          <mat-icon>download
+          </mat-icon></a>
+      </div>
+      <pdf-viewer
+        [src]="AppOk"
+        original-size="false"
+        render-text="false"
+        fit-to-page="true"
+        autoresize="true"
+        style="display: block; text-align: center; max-width: 150px"
+      ></pdf-viewer>
+
+  </div>
 
 
-  <a *ngIf="TipoAnexo == 'application'" [href]="AppOk">
-    <img [src]="imageDoc" />
-  </a>
-  <img
-    Class="imgchat"
-    *ngIf="TipoAnexo == 'image'"
-    [src]="imageOk"
-    (error)="onImgError($event)"
-  />
-  <a
-    *ngIf="TipoAnexo == 'video' || TipoAnexo == 'audio'"
+  <div  *ngIf="TipoAnexo == 'video' || TipoAnexo == 'audio'">
+    <div mat-dialog-content>
+      <div class="chat-with">
+        <audio controls  *ngIf="TipoAnexo == 'audio'">
+          <source [src]="audioOk" type="audio/ogg; codecs=opus" />
+          <source [src]="audioOk" type="audio/ogg; codecs=vorbis" />
+          <source [src]="audioOk" type="audio/mpeg" />
+          Audio não suportado nesse browser!
+        </audio>
+
+        <video  controls class="imgchat" *ngIf="TipoAnexo == 'video'">
+          <source [src]="videoOk" type="video/mp4" />
+          <source [src]="videoOk" type="video/ogg" />
+          Video não suportado nesse browser!
+        </video>
+      </div>
+    </div>
+   <!--
+
+<a
+
     [href]="TipoAnexo == 'video' ? videoOk : audioOk"
     target="_blank"
   >
@@ -45,38 +72,34 @@
       [src]="MediaImg"
     />
   </a>
+   -->
+  </div>
 
-  <p [innerHTML]="Mensagem"></p>
 
-  <div
-  style="width: 100%; text-align: right; "
->
-<div class="statusEntrega">
-  <span class="material-icons" *ngIf="enviada" style="color: green">
-    mark_email_read
-  </span>
-  <span
-    class="material-icons"
-    [matTooltip]="menssagemerro"
-    *ngIf="erro"
-    style="color: red"
-    >warning</span
-  >
-  <span style="color: blue; font-weight: 500; font-size: 0.8em">
-    {{ ChipContato }}
-  </span>
+  <div>
+    <img
+    Class="imgchat"
+    *ngIf="TipoAnexo == 'image'"
+    [src]="imageOk"/>
+  <!--(error)="onImgError($event)" -->
+    <p [innerHTML]="Mensagem"></p>
+  </div>
+
+  <div style="width: 100%; text-align: right">
+    <div class="statusEntrega">
+      <mat-icon class="material-icons" *ngIf="enviada" style="color: green">
+        mark_email_read
+      </mat-icon>
+      <mat-icon
+        class="material-icons"
+        [matTooltip]="menssagemerro"
+        *ngIf="erro"
+        style="color: red"
+        >warning</mat-icon
+      >
+      <span style="color: blue; font-weight: 500; font-size: 0.8em">
+        {{ ChipContato }}
+      </span>
+    </div>
+  </div>
 </div>
-
-
-</div>
-</div>
-
-<!--
-
-
-image
-audio
-video
-application
-
--->

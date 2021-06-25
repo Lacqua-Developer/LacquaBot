@@ -80,7 +80,7 @@ export class ChatService {
   public getListaChatEsp(id: string): Observable<ListaChat[]> {
     if (parseInt(id, 10) > 0) {
       return this.http.get<ListaChat[]>(
-        environment.api + 'ListaChat/GetListaEspera/' + id
+        environment.api + 'ListaChat/GetListaEspera/0'
       );
     }
   }

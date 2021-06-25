@@ -1,0 +1,47 @@
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 30px;
+
+
+    .logo{
+      padding-top: 5px;
+      width: 30px;
+
+    }
+    .titulo{
+      height: 30px;
+
+    }
+
+    .nomelogo{
+      padding: 1px;
+      height: 25px;
+    }
+
+    .profile{
+      font-size: small;
+      display: flex;
+      justify-content: end;
+
+    }
+  }
+
+.contaniner{
+
+
+
+.sidenav{
+  background-color: #3c3c7e;
+  color: #f0f8ff;
+  width: 250px;
+}
+.list{
+  color: #f0f8ff;
+}
+}
+
+.sidenav-submenu{
+  margin-left: 30px;
+}

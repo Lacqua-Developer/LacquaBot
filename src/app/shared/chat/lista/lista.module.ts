@@ -1,4 +1,4 @@
-import { ImageChatComponent } from './../image-chat/image-chat.component';
+import { GroupByPipe } from './../../../pipes/group-by.pipe';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListaComponent } from './lista.component';
@@ -11,8 +11,10 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { FormsModule } from '@angular/forms';
 import { SharedComponentsModule } from '../../shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import {  MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon'
 import { MyFilterPipe } from 'src/app/pipes/my-filter.pipe';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [ListaComponent,
@@ -20,8 +22,10 @@ import { MyFilterPipe } from 'src/app/pipes/my-filter.pipe';
                  ListaSeguimentoComponent,
                  ListaDefaultComponent,
                  ListaChipComponent,
-                 MyFilterPipe],
+                 MyFilterPipe,
+                 GroupByPipe],
   imports: [
+
     CommonModule,
     MatToolbarModule,
     MatTooltipModule,
@@ -29,14 +33,16 @@ import { MyFilterPipe } from 'src/app/pipes/my-filter.pipe';
     FormsModule,
     SharedComponentsModule,
     MatIconModule,
-
-
-  ],
+    MatExpansionModule,
+    ScrollingModule  ],
   exports:[ListaComponent,
           MatToolbarModule,
           MatTooltipModule,
           MatDialogModule,
           MatIconModule,
-          MyFilterPipe
+          MyFilterPipe,
+          GroupByPipe,
+          MatExpansionModule,
+          ScrollingModule
       ]})
 export class ChatListaModule { }

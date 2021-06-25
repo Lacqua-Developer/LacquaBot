@@ -13,10 +13,15 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 })
 export class ImageChatComponent implements OnChanges {
   constructor(private profile: GetProfileService, private up: UploderService,
-    private chat: ChatService,private util: UtilService) {}
+    private chat: ChatService,private util: UtilService) {
+    }
+
+  public avatar: string;
+
   @Input() imgP: string;
   @Input() self: string;
   @Input() session: string;
+  @Input() telefone: string;
 
   public imageWhats = environment.app  + 'assets/Images/Ausente.png';
   public imgWhats =  environment.app  + 'assets/Images/Ausente.png';
@@ -38,6 +43,9 @@ export class ImageChatComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.util.debug('ID:' + this.imgP);
     this.util.debug('Contato:' + this.self);
+
+    this.avatar = environment.servWhats + "getAvatar?sessionName=" + this.session + "&number=" + this.telefone
+
    // this.imageWhats = this.self;
   }
 }

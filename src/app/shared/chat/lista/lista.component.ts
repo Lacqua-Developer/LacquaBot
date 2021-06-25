@@ -1,3 +1,5 @@
+import { ChatEspera } from './../../../store/actions/chat-espera.actions';
+import { ChatContatos } from './../../../store/actions/chat-contatos.actions';
 import { Sessao } from './../../../models/sessao';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { UtilService } from '../../../services/util.service';
@@ -22,6 +24,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Output, OnDestroy } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { ChatAtivos, LoginAtivos } from 'src/app/store/actions';
+import { ChatState } from 'src/app/store/interfaces/states';
+
 @Component({
   selector: 'app-contato-lista',
   templateUrl: './lista.component.html',
@@ -35,6 +41,10 @@ export class ListaComponent implements OnInit, OnDestroy {
 
   public srcCont: string;
 
+  public configAtivo: Config;
+
+  public storeChat: string;
+
   public ico = 0;
 
   constructor(
@@ -45,81 +55,71 @@ export class ListaComponent implements OnInit, OnDestroy {
     private config: ConfigService,
     public dialog: MatDialog,
     private core: CoreService,
-    private util: UtilService
+    private util: UtilService,
+    private store: Store<ChatState>
   ) {
-    this.ls.RetornaUsr.subscribe((u) => (this.usr = u));
-    core.Inicializa(this.usr);
-    let u = new Usuario();
-    let c = new Config();
-    c.Apelido = 'Credz';
-    c.ID = 12;
-    u.IdUsr = 15;
-    u.Permissao = 1;
-    u.Config = c;
 
-    this.usr = u;
+    this.store
+    .select<any> ('login')
+    .subscribe((state  => {
+      this.usr =  state['usuario'];
+     } ));
+
+
+     this.store
+     .select<any> ('config')
+     .subscribe((state  => {
+       this.configAtivo =  state['configAtivo'];
+      } ));
+
+
   }
 
   @Input() NroSaida: Config;
   @Input() usr: Usuario;
   @Output() contatoSel = new EventEmitter<Contato>();
-  @Input() TipoChat: string = '1';
+  @Input() TipoChat: string ;
 
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
-    this.util.debug('Tipo Chat:', this.TipoChat);
-    switch (this.TipoChat.toString()) {
+    this.ico = 0;
+
+    switch(this.TipoChat){
       case '1':
-        this.core.VerificaContatoSbj.subscribe((c) => {
-          this.contatos = c;
-          this.util.debug('Contato', c);
-        });
-        this.core.verificaContatos(
-          this.usr.IdUsr.toString(),
-          this.usr.Permissao.toString()
-        );
-        this.core.IniciaServCont(this.usr);
-
+        this.storeChat = 'chatContatos';
+        this.store.dispatch(ChatContatos( { IdUsr: this.usr.IdUsr.toString() } ))
         break;
-
       case '2':
-        this.core.VerificaAtivosSbj.subscribe((c) => {
-          this.contatos = c;
-          this.util.debug('Contato', c);
-        });
-        this.core.verificaAtivos(this.usr.IdUsr.toString());
-        this.core.IniciaServAtv(this.usr);
-
+        this.storeChat = 'chatAtivos';
+        this.store.dispatch(ChatAtivos( { IdUsr: this.usr.IdUsr.toString() }))
         break;
-
       case '3':
-        this.core.VerificaEsperaSbj.subscribe((c) => {
-          this.contatos = c;
-          this.util.debug('Contato', c);
-        });
-        this.core.verificaEspera();
-        this.core.IniciaServEsp(this.usr);
-
-        break;
-
-      default:
-        this.util.debug('Não iniciado');
+        this.storeChat = 'chatEspera';
+        this.store.dispatch(ChatEspera( { IdUsr: this.usr.IdUsr.toString() }) )
         break;
     }
-  }
 
+
+
+
+
+
+  }
 
   iconlist(): void {
     this.ico = 0;
   }
 
   iconChip(): void {
+
     this.ico = 2;
   }
+
   iconAgenda(): void {
     this.ico = 3;
   }
+
   iconSeg(): void {
     this.ico = 1;
   }
@@ -128,13 +128,13 @@ export class ListaComponent implements OnInit, OnDestroy {
     if (this.srcCont) {
       this.util.debug(this.srcCont);
       this.profile
-        .getTelefoneStatus(this.srcCont + '@c.us', this.usr.Config.Apelido)
+        .getTelefoneStatus(this.srcCont + '@c.us', this.configAtivo.Apelido)
         .subscribe((x) => {
           this.util.debug(x);
           if (x.numberExists) {
             const co: Contato = new Contato();
             co.IdWhatsApp = this.srcCont + '@c.us';
-            co.IdConfig = this.usr.Config.ID;
+            co.IdConfig = this.configAtivo.ID;
             co.Telefone = this.srcCont;
             this.chatService.setContato(co)
                 .subscribe((c) => {
@@ -145,7 +145,7 @@ export class ListaComponent implements OnInit, OnDestroy {
                 if (ss.Usuario_IdUsuario == this.usr.IdUsr) {
                   this.util.debug('Sessao Criada:', ss);
                 } else {
-                  this.util.debug('Sessao alococada:', ss.Usuario.NomeUsuario);
+                  this.util.debug('Sessao alocada:', ss.Usuario.NomeUsuario);
                   alert(
                     'Sessão iniciada por outro operador! ' +
                       ss.Usuario.NomeUsuario

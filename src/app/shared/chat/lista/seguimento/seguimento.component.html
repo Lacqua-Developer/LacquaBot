@@ -1,1 +1,74 @@
-<p>seguimento works!</p>
+<mat-accordion class=" clearfix example-headers-align" style="padding: 10px;">
+  <mat-expansion-panel  *ngFor="let g of contatos | groupBy : 'Seguimento'">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{g.key}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+
+
+      <ul class="clearfix" style=" list-style-type: none;padding:5px;">
+
+        <li
+          #messageEl
+          class="clearfix"
+          *ngFor="let c of g.value "
+          [attr.data-message-id]="c.IdContato"
+          [attr.data-message-tel]="c.Telefone"
+          (click)="onClick(messageEl)"
+          style="padding-bottom: 10px;"
+        >
+
+          <app-image-chat
+          imgP="{{ c.IdWhatsApp }}"
+          self="{{ c.ImageProfile }}"
+          telefone="{{ c.Telefone }}"
+          [session]="user.Configs[0].Apelido"
+        ></app-image-chat>
+          <div
+            class="about"
+            [matTooltip]="c.Status =='Bloqueado' ? 'Bloqueado' : ''"
+          >
+            <div
+              class="name"
+              [matTooltip]="'Telefone: ' + c.Telefone"
+              [ngStyle]="{'text-decoration': c.Status=='Bloqueado' ? 'line-through' : 'solid'}"
+            >
+              {{ c.NomeInformado ? c.NomeInformado : c.NomeRetornado }}
+            </div>
+            <div class="status">
+              <span><b>{{ c.QtdeNLido }}</b> Não Lidas</span>
+              <div
+                class="StSessao"
+                [matTooltip]="c.Sessao?.Usuario?.NomeUsuario"
+                *ngIf="TipoChat != '3'"
+              >
+                <mat-icon *ngIf="c.Sessao?.IdSession == 0">lock</mat-icon>
+                <mat-icon
+                  *ngIf="
+                    c.Sessao?.IdSession > 0 && c.Sessao?.Usuario_IdUsuario > 0
+                  "
+                  >lock_open</mat-icon
+                >
+                <mat-icon
+                  style="color: #d12121"
+                  *ngIf="
+                    c.Sessao?.IdSession > 0 && c.Sessao?.Usuario_IdUsuario == 0
+                  "
+                  >lock_clock</mat-icon
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+
+
+
+      </ul>
+
+
+  </mat-expansion-panel>
+
+
+</mat-accordion>

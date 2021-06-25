@@ -1,3 +1,5 @@
+import { ChatEspera, ResetChatEspera, SelecionaContatoChatEspera } from './../../../store/actions/chat-espera.actions';
+import { Store } from '@ngrx/store';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Sessao } from 'src/app/models/sessao';
@@ -6,6 +8,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { LoginService } from 'src/app/services/login.service';
 import { UtilService } from 'src/app/services/util.service';
 import { DialogDataAbre } from '../../models/dialogs.model';
+import { AppState } from 'src/app/store/app-reducers';
 
 @Component({
   selector: 'app-texto-atendimento',
@@ -19,7 +22,8 @@ export class AbreAtendimentoComponent  {
     @Inject(MAT_DIALOG_DATA) public data: DialogDataAbre,
     private chat: ChatService,
     private util: UtilService,
-    private login: LoginService
+    private login: LoginService,
+    private store: Store<AppState>
   ) {
     this.util.debug('Abrindo Sessão!');
     this.DataDiag = data;
@@ -36,6 +40,7 @@ export class AbreAtendimentoComponent  {
         this.util.debug('Sessao:', y);
         if (y) {
           alert('Sessão Aberta!');
+          this.store.dispatch(ResetChatEspera());
           this.util.debug(this.DataDiag);
           this.dialogRef.close();
         } else {

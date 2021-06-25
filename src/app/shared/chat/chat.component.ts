@@ -1,12 +1,10 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
-import { Config } from 'src/app/models/config';
+import { Usuario } from './../../models/usuario';
+import { ChatState } from './../../store/interfaces/states';
+import { Store } from '@ngrx/store';
+import { CoreService } from './../../services/core.service';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Contato } from 'src/app/models/contato';
-import { Usuario } from 'src/app/models/usuario';
-import { CoreService } from 'src/app/services/core.service';
-import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +13,8 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class ChatComponent implements OnInit, OnChanges  {
 
-  constructor() {}
+  constructor(private core: CoreService,
+              private store: Store<ChatState>) {}
   ngOnChanges(changes: SimpleChanges): void {
     this.IdContatoSelecao = 0;
     this.ContatoSelecao = new Contato();
@@ -23,6 +22,7 @@ export class ChatComponent implements OnInit, OnChanges  {
 
   public IdContatoSelecao = 0;
   public ContatoSelecao: Contato = new Contato();
+  public usr: Usuario;
 
   @Input() TipoChat: string;
 
@@ -31,13 +31,21 @@ export class ChatComponent implements OnInit, OnChanges  {
   emitEventToChild() {}
 
   ngOnInit(): void {
-    //this.util.debug('Tipochat:', this.TipoChat);
+
+    this.store
+    .select<any> ('login')
+    .subscribe((state  => {
+      this.usr =  state['usuario'];
+     } ));
+
+     console.log( 'Tipo Chat:', ' Form Comp', this.TipoChat)
+
   }
 
   selecionaContato(event: Contato): void {
-    console.log('Contato Selecionado:', event, this.TipoChat);
+/*  console.log('Contato Selecionado:', event, this.TipoChat);
     this.IdContatoSelecao = event.IdContato;
     this.ContatoSelecao = event;
-    this.eventsSubject.next(event);
+    this.eventsSubject.next(event); */
   }
 }

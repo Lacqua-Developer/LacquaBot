@@ -3,26 +3,9 @@ import { UtilService } from './util.service';
 import { Usuario } from '../models/usuario';
 import { ChatService } from './chat.service';
 import { Conversa } from '../models/conversa';
-import {
-  Subject,
-  interval,
-  EMPTY,
-  Subscription,
-  Subscriber,
-  concat,
-  Observable,
-} from 'rxjs';
+import { Subject,  Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { DataService } from './data-service.service';
 import { Contato } from '../models/contato';
-import {
-  concatMap,
-  exhaustMap,
-  observeOn,
-  takeUntil,
-  takeWhile,
-} from 'rxjs/operators';
-import { ConditionalExpr } from '@angular/compiler';
 import { TPChat } from '../models/tipo-chat';
 import { ListaChat } from '../models/ListaChat';
 
@@ -33,8 +16,7 @@ export class CoreService {
   constructor(
     private chat: ChatService,
     private util: UtilService,
-    private ws: WebsocketService,
-    private wsNew: DataService
+    private ws: WebsocketService
   ) {}
 
   public VerificaAtivosSbj: Subject<Contato[]> = new Subject();
@@ -58,26 +40,10 @@ export class CoreService {
 
   public StopCheck: Subject<any>;
 
-  private intevalAtivos = interval(5000);
-  private intevalEspera = interval(5000);
-  private intevalContatos = interval(5000);
-  private intevalConversas = interval(3000);
-
-  private PAtivo = 0;
-  private PEspera = 0;
-  private PContato = 0;
-  private PConversa = 0;
-
-  private NAtivo: number[] = [];
-  private NEspera: number[] = [];
-  private NContato: number[] = [];
-  private NConversa: number[] = [];
-
   private SubscrAtv: Subscription;
   private SubscrCont: Subscription;
   private SubscrEsp: Subscription;
 
-  private SubscripitionConv: Subscription[] = [];
   public Inicializa(Usr: Usuario): void {
     this.Timeout = 30;
 
@@ -97,6 +63,10 @@ export class CoreService {
       this.verificaEspera();
     });
 
+    this.IniciaServAtv(Usr);
+    this.IniciaServCont(Usr);
+    this.IniciaServEsp(Usr);
+
     this.ws.VerificaReconnect.subscribe(() => {
       this.util.debug('Reconectando...');
       this.SubscrAtv.unsubscribe();
@@ -109,20 +79,6 @@ export class CoreService {
         this.IniciaServEsp(Usr);
       }, 3000);
     });
-  }
-
-  public IniciaConv(usr: Usuario, tp: number): void {
-    const c = this.CurrentIdContato;
-
-    if (this.SubscripitionConv) {
-      this.util.debug('Limpa check');
-      this.SubscripitionConv.forEach((x) => x.unsubscribe());
-      this.SubscripitionConv.forEach((x) => x.remove);
-      this.SubscripitionConv = [];
-    }
-    this.util.debug('Subscriptiom', this.SubscripitionConv.length);
-    this.SubscripitionConv.push(this.verificaConversas(usr, tp));
-    this.util.debug('Subscriptiom apos', this.SubscripitionConv);
   }
 
   public IniciaServAtv = (Usr) => {
@@ -154,6 +110,7 @@ export class CoreService {
 
   public verificaAtivos(IdUsr: string): void {
     this.chat.getContatoSessao(IdUsr).subscribe((c) => {
+
       this.util.debug('Ativos', c);
       this.VerificaAtivosSbj.next(c);
     });
@@ -179,114 +136,5 @@ export class CoreService {
     }
   }
 
-  public verificaConversas(Usr: Usuario, tp: number): Subscription {
-    this.util.debug('Inicia Check-Conversa', this.CurrentContato.IdContato);
-    return this.intevalConversas
-      .pipe(takeWhile((x) => this.CurrentIdContato > 0))
-      .subscribe(
-        (next) => {
-          this.util.debug('Check', next);
-          let cont = 0;
-          const par: Conversa = !this.UltimaConversa
-            ? new Conversa()
-            : this.UltimaConversa;
-          if (
-            this.TipoChatClass.IdContato > 0 &&
-            this.TipoChatClass.TipoChat == tp
-          ) {
-            this.chat
-              .CheckConversa(par)
-              .pipe(exhaustMap(async (x) => x))
-              .subscribe((x) => {
-                console.log(
-                  'Consulta Convesa:',
-                  x.response,
-                  this.contAtu,
-                  this.CurrentIdContato
-                );
-                if (x.response === true || this.contAtu > 20) {
-                  if (this.CurrentIdContato > 0) {
-                    this.chat
-                      .getContatoId(this.CurrentIdContato.toString())
-                      .pipe(exhaustMap(async (y) => y))
-                      .subscribe((cont) => {
-                        this.contAtu = 0;
-                        const UltimaMsgCheck: number =
-                          cont.Conversa.length > 0
-                            ? cont.Conversa[0].IdConversa
-                            : 0;
 
-                        if (this.CurrentIdContato == cont.IdContato) {
-                          //  if (UltimaMsgCheck !== this.UltimaMsg || this.contAtu > 30) {
-                          this.UltimaMsg = UltimaMsgCheck;
-                          this.UltimaConversa =
-                            cont.Conversa.length > 0
-                              ? cont.Conversa[0]
-                              : new Conversa();
-                          this.util.debug('Check Tp:', this.TipoChat);
-                          switch (this.TipoChat.toString()) {
-                            case '1':
-                              this.util.debug(
-                                'Atualiza Contato',
-                                cont.Conversa.length
-                              );
-                              this.VerificaConversasContatosSbj.next(
-                                cont.Conversa
-                              );
-                              break;
-
-                            case '2':
-                              this.util.debug(
-                                'Atualiza Ativos',
-                                cont.Conversa.length
-                              );
-                              this.VerificaConversasAtivosSbj.next(
-                                cont.Conversa
-                              );
-                              break;
-
-                            case '3':
-                              this.util.debug(
-                                'Atualiza Espera',
-                                cont.Conversa.length
-                              );
-                              this.VerificaConversasEsperaSbj.next(
-                                cont.Conversa
-                              );
-                              break;
-
-                            default:
-                              this.util.debug(
-                                'Atualiza defaut',
-                                cont.Conversa.length
-                              );
-                              this.VerificaConversasEsperaSbj.next(
-                                cont.Conversa
-                              );
-                              this.VerificaConversasAtivosSbj.next(
-                                cont.Conversa
-                              );
-                              this.VerificaConversasContatosSbj.next(
-                                cont.Conversa
-                              );
-                              break;
-                          }
-
-                          // }
-                        }
-                      });
-                  }
-                }
-                this.contAtu++;
-              });
-          }
-        },
-        (erro) => {
-          this.util.debug('erro Intervalo:', erro);
-        },
-        () => {
-          this.util.debug('Fim Intervalo!');
-        }
-      );
-  }
 }

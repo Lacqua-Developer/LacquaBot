@@ -2,18 +2,20 @@
   <div class="chat-header clearfix">
     <div class="chat-about">
       <app-image-chat
-        *ngIf="contato.IdWhatsApp"
-        imgP="{{ contato.IdWhatsApp }}"
-        self="{{ contato.ImageProfile }}"
-      ></app-image-chat>
+      imgP="{{ contato.IdWhatsApp }}"
+      self="{{ contato.ImageProfile }}"
+      telefone="{{ contato.Telefone }}"
+      [session]="conf[0].Apelido"
+    ></app-image-chat>
       <div style="width: 450px">
         <div class="chat-with">
-          {{ contato?.NomeRetornado ? contato?.NomeRetornado : "" }}
+          {{ contato.NomeInformado ? contato.NomeInformado : contato.NomeRetornado }}
+
         </div>
 
         <div class="botoes">
           <button
-            *ngIf="(this.contatoSelecao && TipoChat == 3) || TipoChat == 1"
+            *ngIf="(this.contatoSelecao && TipoChat == '3') || TipoChat == '1'"
             (click)="AbreSessao()"
             mat-raised-button
             color="primary"
@@ -25,8 +27,8 @@
           <button
             mat-button
             *ngIf="
-              (this.contatoSelecao && TipoChat == 2) ||
-              (this.contatoSelecao && TipoChat == 1 && usr.Permissao == 1)
+              (this.contatoSelecao && TipoChat == '2') ||
+              (this.contatoSelecao && TipoChat == '1' && usr.Permissao == 1)
             "
             (click)="fechaSessao()"
             mat-raised-button
@@ -37,8 +39,8 @@
           </button>
           <button
             *ngIf="
-              (this.contatoSelecao && TipoChat == 2) ||
-              (this.contatoSelecao && TipoChat == 1 && usr.Permissao == 1)
+              (this.contatoSelecao && TipoChat == '2') ||
+              (this.contatoSelecao && TipoChat == '1' && usr.Permissao == 1)
             "
             (click)="transfer()"
             mat-raised-button
@@ -61,12 +63,13 @@
     </div>
   </div>
   <!-- end chat-header -->
-  <mat-progress-bar mode="indeterminate" *ngIf="this.currentsessao == 0 && contatoSelecao.IdContato > 0"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" *ngIf=" (storage | async).loading "></mat-progress-bar>
     <div class="chat-history">
       <ul>
         <li class="clearfix" *ngFor="let c of ConversaSelecao ">
+         <!-- *ngIf="this.currentsessao == c.Contatos_IdContato"-->
           <app-message-ajust
-            *ngIf="this.currentsessao == c.Contatos_IdContato"
+            telefone="{{this.contatoSelecao.Telefone}}"
             EnvPor="{{
               c.Usuario.NomeUsuario
                 ? c.Usuario.NomeUsuario
@@ -84,8 +87,8 @@
             [erro]="c.MensagemQueue?.Erro"
             [menssagemerro]="c.MensagemQueue?.Mensagem"
             [TipoAnexo]="c.Anexo.Tipo"
-            [ChipContato]="c.Config?.Apelido"
-          ></app-message-ajust>
+            [ChipContato]="c.Config?.Apelido">
+          </app-message-ajust>
         </li>
       </ul>
     </div>
@@ -94,7 +97,7 @@
   <form
     #myForm="ngForm"
     (ngSubmit)="EnviaMsg(myForm)"
-    *ngIf="TipoChat == 2 || (TipoChat == 1 && usr.Permissao == 1)"
+    *ngIf="TipoChat == '2' || (TipoChat == '1' && usr.Permissao == 1)"
   >
     <div class="selecconf" style="background-color: #e2e2e2; font-weight: 400">
       <span>Saida: </span>
@@ -143,6 +146,7 @@
         </button>
         <app-uploader
           class="icup"
+          [contato]="contato"
           (pathevent)="ImageUploased($event)"
         ></app-uploader>
       </div>

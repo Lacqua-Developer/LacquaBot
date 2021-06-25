@@ -72,6 +72,7 @@ height: 0;
 }
 .message {
   color: rgb(73, 61, 61);
+  display: block;
   padding: 5px 5px;
   line-height: 20px;
   font-size: 16px;
@@ -119,7 +120,13 @@ height: 0;
     .Saida{
     background-color: $green;
     height: 100%;
+
     margin-left: 50px;
+    }
+
+    .application{
+      min-height: 250px;
+      min-width: 450px;
     }
 
   .lnbr{white-space: pre-wrap;}

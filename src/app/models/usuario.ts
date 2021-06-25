@@ -1,6 +1,6 @@
 import { Config } from 'src/app/models/config';
 export class Usuario {
-  IdUsr: number;
+  IdUsr: number ;
   NomeUsuario: string;
   Id_Externo: string;
   Permissao: number;
@@ -14,5 +14,6 @@ export class Usuario {
   Logado: boolean;
   SessionWhats: string;
   Config: Config;
+  Configs:Config[];
   NomePermissao: string;
 }

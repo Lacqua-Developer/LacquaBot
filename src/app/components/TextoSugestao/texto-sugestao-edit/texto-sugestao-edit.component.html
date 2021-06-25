@@ -1,0 +1,121 @@
+<div class="card">
+  <div class="header">
+    <h2 class="title">Cadastro de Textos - Sugestão</h2>
+  </div>
+  <div class="content">
+    <div *ngIf="feedback" class="alert alert-{{ feedback.type }}">
+      {{ feedback.message }}
+    </div>
+    <form *ngIf="textoSugestao" #editForm="ngForm" (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Id</label>
+        {{ textoSugestao.idSugest || "n/a" }}
+      </div>
+
+      <div class="form-group">
+        <label for="Nome">Nome</label>
+        <input
+          [(ngModel)]="textoSugestao.Nome"
+          id="Nome"
+          name="Nome"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="Config_IdConfig">Chip</label>
+        <select
+          [(ngModel)]="textoSugestao.Config_IdConfig"
+          id="Config_IdConfig"
+          name="Config_IdConfig"
+          class="form-control"
+        >
+          <option *ngFor="let item of chips" [value]="item.ID">
+            {{ item.Apelido }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="Texto">Texto</label>
+        <textarea
+          [(ngModel)]="textoSugestao.Texto"
+          rows="5"
+          id="Texto"
+          name="Texto"
+          class="form-control"
+        ></textarea>
+      </div>
+      <div>
+        <table class="table table-centered table-hover mb-0">
+          <tr>
+            <th>Variável</th>
+            <th>Descrição</th>
+          </tr>
+
+          <tr>
+            <td>[SAUDACAO]</td>
+            <td>
+              Bom dia, Boa Tarde, Boa Noite dependendo do horário de envio
+            </td>
+          </tr>
+
+          <tr>
+            <td>[NOMERETORNO]</td>
+            <td>
+              Nome retornado do celular do cliente. Obs: Quando Receptivo
+            </td>
+          </tr>
+
+          <tr>
+            <td>[NOME]</td>
+            <td>
+              Nome cadastrado no sistema
+            </td>
+          </tr>
+          <tr>
+            <td>[CPF]</td>
+            <td>
+              CPF do Cliente, quando cadastrado!
+            </td>
+          </tr>
+          <tr>
+            <td>[CPF_MASCARADO]</td>
+            <td>
+              CPF do cliente Parcial, mascarado conforme parametros do sistema.
+            </td>
+          </tr>
+          <tr>
+            <td>[CHAVE]</td>
+            <td>
+              ID do cliente.
+            </td>
+          </tr>
+          <tr>
+            <td>[TELEFONE]</td>
+            <td>
+              Telefone cadastrado.
+            </td>
+          </tr>
+          <tr>
+            <td>[CodBarras]</td>
+            <td>
+              Linha digitável quando importado do sistema.
+            </td>
+          </tr>
+        </table>
+
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!editForm.form.valid"
+      >
+        Save
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Cancel
+      </button>
+    </form>
+  </div>
+</div>
