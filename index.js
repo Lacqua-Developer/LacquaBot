@@ -4,10 +4,13 @@ const axios=require("axios");
 require('dotenv').config();
 
 const app=express().use(body_parser.json());
-const Port=3000;
+const Port=53333;
 
 const token=process.env.TOKEN;
 const mytoken=process.env.MYTOKEN;//prasath_token
+
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 
 app.listen(Port,()=>{
     console.log("webhook is listening om port:" , Port,process.env.PORT);
@@ -60,7 +63,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                        messaging_product:"whatsapp",
                        to:from,
                        text:{
-                           body:"Hi.. I'm Prasath, your message is "+msg_body
+                           body: VerificaRobot (msg_body)
                        }
                    },
                    headers:{
@@ -79,5 +82,44 @@ app.post("/webhook",(req,res)=>{ //i want some
 });
 
 app.get("/",(req,res)=>{
-    res.status(200).send("hello this is webhook setup");
+    //res.status(200).send("hello this is webhook setup");
+    res.render('pages/index');
 });
+
+
+async function VerificaRobot(msg) {
+    try {
+      this.util.debug("Enviando para Api em " + process.env.URL_API);
+  
+      let res = await axios
+        .post(process.env.URL_API, msg, {
+          todo: msg,
+        })
+        .then((res) => {
+          this.util.debug(`statusCode: ${res.statusCode}`);
+          this.util.debug(res);
+          const notifications = res.data.toString("utf8");
+          return notifications;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  
+      this.util.debug("Resposta: " + res);
+      return res;
+      // return  request.post({
+      //     "headers": { "content-type": "application/json" },
+      //     "url": process.env.URL_API,
+      //     "body": JSON.stringify(msg)
+      // }, (error, response, body) => {
+      //     if (error) {
+      //         return this.util.debug(error);
+      //     }
+      //     this.util.debug(body);
+      //     return body;
+      // });
+    } catch (erro) {
+      this.util.debug(erro);
+    }
+    return "Erro Acesso API.";
+  }
