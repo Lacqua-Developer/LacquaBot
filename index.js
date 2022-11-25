@@ -89,15 +89,15 @@ app.get("/",(req,res)=>{
 
 async function VerificaRobot(msg) {
     try {
-      this.util.debug("Enviando para Api em " + process.env.URL_API);
+      console.log("Enviando para Api em " + process.env.URL_API);
   
       let res = await axios
         .post(process.env.URL_API, msg, {
           todo: msg,
         })
         .then((res) => {
-          this.util.debug(`statusCode: ${res.statusCode}`);
-          this.util.debug(res);
+          console.log(`statusCode: ${res.statusCode}`);
+          console.log(res);
           const notifications = res.data.toString("utf8");
           return notifications;
         })
@@ -105,7 +105,7 @@ async function VerificaRobot(msg) {
           console.error(error);
         });
   
-      this.util.debug("Resposta: " + res);
+      console.log("Resposta: " + res);
       return res;
       // return  request.post({
       //     "headers": { "content-type": "application/json" },
@@ -113,9 +113,9 @@ async function VerificaRobot(msg) {
       //     "body": JSON.stringify(msg)
       // }, (error, response, body) => {
       //     if (error) {
-      //         return this.util.debug(error);
+      //         return console.log(error);
       //     }
-      //     this.util.debug(body);
+      //     console.log(body);
       //     return body;
       // });
     } catch (erro) {
