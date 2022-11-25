@@ -119,7 +119,7 @@ async function VerificaRobot(msg) {
       //     return body;
       // });
     } catch (erro) {
-      this.util.debug(erro);
+      console.log('Erro API',erro);
     }
     return "Erro Acesso API.";
   }
