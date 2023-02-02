@@ -23,10 +23,10 @@ webhook is listening om port: 3000 undefined
             "messages": [
               {
                 "from": "5511963191922",
-                "id": "wamid.HBgNNTUxMTk2MzE5MTkyMhUCABIYIDM5NjA5MjczMkE1MjZBRjI5MTI1M0M2NUY3OThCREE5AA==",
-                "timestamp": "1672143928",
+                "id": "wamid.HBgNNTUxMTk2MzE5MTkyMhUCABIYIEVFQTYzNjAzMzBDMUY4NzIwREEzQ0QzNDExODk4MEJCAA==",
+                "timestamp": "1674824411",
                 "text": {
-                  "body": "Bom dia"
+                  "body": "Teste whats...."
                 },
                 "type": "text"
               }
@@ -41,6 +41,53 @@ webhook is listening om port: 3000 undefined
 inside body param
 phone number 110357421899262
 from 5511963191922
-boady param Bom dia
+boady param Teste whats....
 Enviando para Api em http://chat.lacquasistemas.com.br/lacquabot/api/Meta/post
+Resposta: undefined
+webhook is listening om port: 3000 undefined
+{
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "105589279046754",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "5511947658244",
+              "phone_number_id": "110357421899262"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Ary Bevilaqua"
+                },
+                "wa_id": "5511963191922"
+              }
+            ],
+            "messages": [
+              {
+                "from": "5511963191922",
+                "id": "wamid.HBgNNTUxMTk2MzE5MTkyMhUCABIYFDNFQjBGREVDNkQzRDBGRjgyQkEwAA==",
+                "timestamp": "1675338396",
+                "text": {
+                  "body": "testes envio"
+                },
+                "type": "text"
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+inside body param
+phone number 110357421899262
+from 5511963191922
+boady param testes envio
+Enviando para Api em http://chat.lacquasistemas.com.br/lacquabot/api/Meta/post
+Resposta: undefined
 webhook is listening om port: 3000 undefined
