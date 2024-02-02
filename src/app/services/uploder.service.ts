@@ -38,10 +38,10 @@ export class UploderService {
     });
 
     // IE
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(file);
-      return;
-    }
+   // if (window.navigator ) {
+   //   window.navigator.msSaveOrOpenBlob(file);
+   //   return;
+   // }
 
     const blob = window.URL.createObjectURL(file);
 
@@ -60,5 +60,7 @@ export class UploderService {
       window.URL.revokeObjectURL(blob);
       link.remove();
     }, 100);
+
+    return null;
   }
 }

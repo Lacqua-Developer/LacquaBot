@@ -1,5 +1,5 @@
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ChatProducaoComponent } from './components/chat-producao/chat-producao.component';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { ChatProducaoComponent } from '../chat-producao/chat-producao.component' ;
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -23,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class HomeRoutingModule {}

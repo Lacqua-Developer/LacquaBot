@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { Usuario } from './../../../models/usuario';
 import { LoginService } from './../../../services/login.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { LoginAtivos } from 'src/app/store/actions';
 import { ChatState } from 'src/app/store/interfaces/states';
@@ -40,10 +40,10 @@ export class LoginComponent implements OnInit {
   public rel: Relatorio[] = [];
 
 
-  form: FormGroup = new FormGroup({
-    login: new FormControl(''),
-    senha: new FormControl(''),
-    sessao: new FormControl(''),
+  form: UntypedFormGroup = new UntypedFormGroup({
+    login: new UntypedFormControl(''),
+    senha: new UntypedFormControl(''),
+    sessao: new UntypedFormControl(''),
   });
 
   ngOnInit(): void {

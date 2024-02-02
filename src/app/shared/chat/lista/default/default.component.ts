@@ -23,9 +23,7 @@ export class ListaDefaultComponent implements OnInit {
     private store: Store<ChatState>,
     private storeMsg: Store<ChatMessageState>,
     private core: CoreService
-    ) {
-
-  }
+    ) { }
 
   @Input() srcCont: string;
   @Input() cfg: Config;

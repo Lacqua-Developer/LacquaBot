@@ -2,11 +2,11 @@
   <mat-toolbar class="header">
     <div>
       <a routerLink="/home">
-        <img src="assets/images/LacquaBots_Logo_transp.png" class="logo" />
+        <img src="assets/images/LacquaBots_Logo_transp.png" alt="logo" class="logo" />
       </a>
     </div>
     <div class="titulo">
-      <img class="nomelogo" src="assets/images/LacquaBots_texto.png" />
+      <img class="nomelogo" src="assets/images/LacquaBots_texto.png" alt="Nome" />
       <h3></h3>
     </div>
     <div>
@@ -76,7 +76,7 @@
     </mat-sidenav>
     <mat-sidenav-content>
       <app-login *ngIf="!this.logado"></app-login>
-      <app-chat-producao *ngIf="this.logado"></app-chat-producao>
+      <router-outlet *ngIf="usr.IdUsr"></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

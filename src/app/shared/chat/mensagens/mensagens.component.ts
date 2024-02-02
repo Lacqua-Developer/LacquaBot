@@ -18,7 +18,7 @@ import { ChatMenssagem } from '../../../models/ChatMenssagem';
 import { Contato } from '../../../models/contato';
 import { ChatMessageState } from './../../../store/interfaces/states';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, config } from 'rxjs';
 import { ChatService } from '../../../services/chat.service';
 import { Config } from 'src/app/models/config';
 import { Input } from '@angular/core';
@@ -52,6 +52,7 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
   private usrs: Usuario[] = [];
   public MsgAnexo = '';
   public imageRefrsh = environment.app + 'assets/Images/refresh.jfif';
+  public configAtivo : Config;
 
   @Input() currentsessao = 0;
   @Input() contato: Contato = new Contato();
@@ -151,6 +152,16 @@ export class HistoricoMensagemComponent implements OnInit, OnDestroy {
     }
 
     this.ls.RetornaUsr.subscribe((u) => (this.usr = u));
+
+
+    this.store.select<any>('config').subscribe(state => {
+
+      this.configAtivo = state['configAtivo'];
+      console.log('ConfigAtivo:', this.configAtivo);
+
+
+    })
+
     this.conf = this.usr.Configs;
 
     this.storage = this.store.select<any>(this.storeChat);
