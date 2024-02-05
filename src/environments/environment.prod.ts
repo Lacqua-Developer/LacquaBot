@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  api: 'http://localhost/LacquaApi//api/',
+  api: 'http://localhost/LacquaApi/api/',
   app: 'http://localhost',
 
   servWhats: 'http://gate.lacquasistemas.com.br:3333/',
