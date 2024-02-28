@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
-  api: 'http://localhost/LacquaApi/api/',
-  app: 'http://localhost',
+  api: 'http://chat.lacquasistemas.com.br/LacquaApi/api/',
+  app: 'http://chat.lacquasistemas.com.br',
 
-  servWhats: 'http://gate.lacquasistemas.com.br:3333/',
+  servWhats: 'http://www.lacquasistemas.com.br:3333/',
   debug: false,
   reportPath: './assets/public/reports/',
 
-  wsServer: 'ws://notify.lacquasistemas.com.br:3334'
+  wsServer: 'ws://www.lacquasistemas.com.br:3334'
 
 };
