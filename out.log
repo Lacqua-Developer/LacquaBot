@@ -17,12 +17,12 @@ webhook is listening om port: 3000 undefined
                 "profile": {
                   "name": "Ary Bevilaqua"
                 },
-                "wa_id": "5511963191922"
+                "wa_id": "551196319...."
               }
             ],
             "messages": [
               {
-                "from": "5511963191922",
+                "from": "55119631....",
                 "id": "wamid.HBgNNTUxMTk2MzE5MTkyMhUCABIYIEVFQTYzNjAzMzBDMUY4NzIwREEzQ0QzNDExODk4MEJCAA==",
                 "timestamp": "1674824411",
                 "text": {
@@ -40,7 +40,7 @@ webhook is listening om port: 3000 undefined
 }
 inside body param
 phone number 110357421899262
-from 5511963191922
+from 551196319....
 boady param Teste whats....
 Enviando para Api em http://chat.lacquasistemas.com.br/lacquabot/api/Meta/post
 Resposta: undefined
@@ -63,12 +63,12 @@ webhook is listening om port: 3000 undefined
                 "profile": {
                   "name": "Ary Bevilaqua"
                 },
-                "wa_id": "5511963191922"
+                "wa_id": "551196319...."
               }
             ],
             "messages": [
               {
-                "from": "5511963191922",
+                "from": "55119631.....",
                 "id": "wamid.HBgNNTUxMTk2MzE5MTkyMhUCABIYFDNFQjBGREVDNkQzRDBGRjgyQkEwAA==",
                 "timestamp": "1675338396",
                 "text": {
@@ -86,7 +86,7 @@ webhook is listening om port: 3000 undefined
 }
 inside body param
 phone number 110357421899262
-from 5511963191922
+from 5511963....
 boady param testes envio
 Enviando para Api em http://chat.lacquasistemas.com.br/lacquabot/api/Meta/post
 Resposta: undefined
