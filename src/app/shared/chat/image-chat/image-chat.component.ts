@@ -16,7 +16,7 @@ export class ImageChatComponent implements OnChanges {
     private chat: ChatService,private util: UtilService) {
     }
 
-  public avatar: string;
+  //public avatar: string;
 
   @Input() imgP: string;
   @Input() self: string;
@@ -25,6 +25,8 @@ export class ImageChatComponent implements OnChanges {
 
   public imageWhats = environment.app  + 'assets/Images/Ausente.png';
   public imgWhats =  environment.app  + 'assets/Images/Ausente.png';
+  public avatar =  environment.app  + 'assets/Images/Ausente.png';
+
   public getProf = () => {
     this.profile.getProfile(this.imgP, this.session).subscribe(urlP => {
       this.util.debug('Contato:' + this.imgP);
@@ -44,7 +46,7 @@ export class ImageChatComponent implements OnChanges {
     this.util.debug('ID:' + this.imgP);
     this.util.debug('Contato:' + this.self);
 
-    this.avatar = environment.servWhats + "getAvatar?sessionName=" + this.session + "&number=" + this.telefone
+    //this.avatar = environment.servWhats + "getAvatar?sessionName=" + this.session + "&number=" + this.telefone
 
    // this.imageWhats = this.self;
   }
