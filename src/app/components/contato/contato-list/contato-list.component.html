@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="header">
+    <h2 class="title">Lista Cadastro de Contatos</h2>
+  </div>
+  <div class="content crud">
+    <form #f="ngForm">
+
+      <div class="form-group">
+        <label for="NomeInformado">Nome:</label>
+        <input [(ngModel)]="filter.NomeInformado" id="NomeInformado" name="NomeInformado" class="form-control">
+      </div>
+
+      <button (click)="search()" [disabled]="!f?.valid" class="btn btn-primary">Search</button>
+      <a [routerLink]="['../contatoes', 'new' ]" class="btn btn-default">New</a>
+    </form>
+  </div>
+</div>
+<div class="card crud" *ngIf="contatoList.length > 0">
+  <div *ngIf="feedback" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+  <div class="table-responsive">
+    <table class="table table-centered table-hover mb-0" id="datatable">
+      <thead>
+        <tr>
+          <th class="border-top-0" scope="col">Id</th>
+          <th class="border-top-0" scope="col">Nome</th>
+          <th class="border-top-0" scope="col">CPF</th>
+          <th class="border-top-0" scope="col">Chave</th>
+          <th class="border-top-0" scope="col">Telefone</th>
+          <th class="border-top-0" scope="col">IdWhatsApp</th>
+          <th class="border-top-0" scope="col">Email</th>
+          <th class="border-top-0" scope="col" style="width:120px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of contatoList" [class.active]="item === selectedContato">
+
+          <td>{{item.IdContato}}</td>
+          <td>{{item.NomeInformado}}</td>
+          <td>{{item.Documento}}</td>
+          <td>{{item.Codigo}}</td>
+          <td>{{item.Telefone}}</td>
+          <td>{{item.IdWhatsApp}}</td>
+          <td>{{item.Email}}</td>
+          <td style="white-space: nowrap">
+            <a [routerLink]="['/contatoes', item.IdContato ]" class="btn btn-secondary">Edit</a>&nbsp;
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

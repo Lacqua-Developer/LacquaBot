@@ -1,0 +1,6 @@
+<div class="contentSug">
+  <mat-card *ngFor="let d of chip.TextoSugestao"
+             class="cardtext"
+             (click)="SelecionaTexto( d.Texto)"
+             [matTooltip]="d.Texto">{{ d.Nome }}</mat-card>
+</div>

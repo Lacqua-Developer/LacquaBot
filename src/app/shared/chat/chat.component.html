@@ -1,0 +1,26 @@
+<div class="container clearfix"
+[ngStyle]="{'background-color': [TipoChat]==1 ?  '#b2e9ec'  : [TipoChat]==2 ? '#4a5686' :   '#b34a6f' }"
+>
+  <mat-grid-list class="gridtela" cols="6" rowHeight="100vh" [gutterSize]="'10px'">
+    <mat-grid-tile colspan="2">
+      <app-contato-lista [TipoChat]="TipoChat" (contatoSel)="selecionaContato($event)"></app-contato-lista>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="4">
+      <figure class="figure-content">
+        <app-historico-mensagem
+          [events]="eventsSubject.asObservable()"
+          [currentsessao]="IdContatoSelecao"
+          [contato]="ContatoSelecao"
+          [contatoSelecao]="ContatoSelecao"
+          [TipoChat]="TipoChat" ></app-historico-mensagem>
+      </figure>
+
+
+
+
+    </mat-grid-tile>
+  </mat-grid-list>
+  <!-- end container -->
+</div>
+
+

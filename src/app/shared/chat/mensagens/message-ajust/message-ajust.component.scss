@@ -1,0 +1,141 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
+$green: #86BB71;
+$blue: #94C2ED;
+$orange: #E38968;
+$gray: #92959E;
+
+
+.online, .offline, .me {
+  margin-right: 3px;
+  font-size: 10px;
+}
+
+.online {
+color: $green;
+}
+
+.offline {
+color: $orange;
+}
+
+.me {
+color: $blue;
+}
+
+.align-left {
+text-align: left;
+}
+
+
+
+.align-right {
+text-align: right;
+}
+
+.float-right {
+float: right;
+}
+
+.clearfix:after {
+visibility: hidden;
+display: block;
+font-size: 0;
+content: " ";
+clear: both;
+height: 0;
+}
+.imgchat{
+  width: 80%;
+  height: auto;
+}
+.statusEntrega{
+  display: flex;
+  justify-content:flex-end;
+
+}
+
+.message-data {
+  margin-bottom: 8px;
+}
+.message-data-time {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: lighten($gray, 8%);
+  padding-left: 6px;
+}
+
+.material-icons{
+  height: 12px;
+  font-size: 14px;
+}
+.message {
+  color: rgb(73, 61, 61);
+  display: block;
+  padding: 5px 5px;
+  line-height: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  margin-bottom: 5px;
+  max-width: 600px;
+  width: 80vw;
+  overflow: auto;
+  position: relative;
+
+  &:after {
+    bottom: 100%;
+    left: 7%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: $green;
+    border-width: 10px;
+    margin-left: -10px;
+  }
+}
+
+  .other-message {
+    background: $blue;
+
+    &:after {
+      border-bottom-color: $blue;
+      left: 93%;
+    }
+  }
+  .chat-history {
+    padding: 3px;
+    border-bottom: 2px solid white;}
+
+    .Entrada {
+
+      background-color: $blue;
+      padding-left: 30px;
+      height: 100%;
+      }
+
+    .Saida{
+    background-color: $green;
+    height: 100%;
+
+    margin-left: 50px;
+    }
+
+    .application{
+      min-height: 250px;
+      min-width: 450px;
+    }
+
+  .lnbr{white-space: pre-wrap;}
+  li{list-style-type: none;}
+  ul{list-style-type: none;}
+
+  p{
+    padding-left: 5px;
+  }
+
+

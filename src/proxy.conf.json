@@ -1,0 +1,6 @@
+{
+  "/api": {
+  "target": "https://www.lacquasistemas.com.br/LacquaApi/api/",
+  "secure": false
+  }
+  }

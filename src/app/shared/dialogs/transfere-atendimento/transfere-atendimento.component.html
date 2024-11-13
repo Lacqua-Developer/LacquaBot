@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Transferir Atendimento</h1>
+<div style="padding: 15px; font-weight: 600;">
+  <div mat-dialog-content>
+    <app-image-chat
+      *ngIf="data.contato?.IdWhatsApp"
+      imgP="{{ data.contato.IdWhatsApp }}"
+      self="{{ data.contato.ImageProfile }}"
+    ></app-image-chat>
+    <div class="chat-with">
+      {{ data.contato?.NomeRetornado ? data.contato?.NomeRetornado : "" }}
+    </div>
+    <mat-form-field>
+      <mat-select [ngModel]="UsrDest" (ngModelChange)="selectChangeHandler($event)">
+        <mat-option value="{{u.IdUsr}}" *ngFor="let u of data.usuarios">
+          {{u.NomeUsuario}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions style="text-align: right">
+    <button mat-button (click)="TransfereAt()">Transfere</button>
+
+  </div>
+</div>

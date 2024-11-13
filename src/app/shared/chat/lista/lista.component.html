@@ -1,0 +1,38 @@
+<div class="people-list" id="people-list">
+  <div class="search">
+    <input [(ngModel)]="srcCont" type="text" placeholder="Filtro" />
+    <button mat-raised-button class="btnAdd" (click)="addContato()">+</button>
+    <i class="fa fa-search"></i>
+  </div>
+
+  <div class="dv-menu"  *ngIf="TipoChat != '3'">
+
+      <a (click)="iconlist()"  matTooltip="Lista">
+
+        <img alt="IcLista"  src="assets/icons/activity-source-svgrepo-com.svg" class="tab-icon" [ngStyle]="{'background-color': ico==0 ? '#5c4a4a' : 'inherit'}" />
+      </a>
+      <a (click)="iconSeg()" matTooltip="Seguimento">
+
+        <img  alt="IcSeg"  src="assets/icons/add-item-svgrepo-com.svg" class="tab-icon" [ngStyle]="{'background-color': ico==1 ?  '#5c4a4a' : 'inherit' }" />
+      </a>
+      <a (click)="iconChip()" matTooltip="Chip">
+
+        <img alt="IcChip" src="assets/icons/iphone-svgrepo-com.svg" class="tab-icon" [ngStyle]="{'background-color': ico==2 ? '#5c4a4a' : 'inherit'}" />
+        </a>
+      <a (click)="iconAgenda()" matTooltip="Agenda">
+
+        <img alt="IcAgenda"  src="assets/icons/alarm-clock-svgrepo-com.svg" class="tab-icon" [ngStyle]="{'background-color': ico==3 ? '#5c4a4a' : 'inherit'}" />
+      </a>
+
+  </div>
+
+
+
+  <div  class="list">
+
+    <app-default [lista]="storeChat" [srcCont]="srcCont"  [cfg]="configAtivo" *ngIf="ico == 0"></app-default>
+    <app-lista-seguimento [lista]="storeChat"  [srcCont]="srcCont" [cfg]="configAtivo" *ngIf="ico == 1"></app-lista-seguimento>
+    <app-lista-chip  [lista]="storeChat"  [srcCont]="srcCont" [cfg]="configAtivo" *ngIf="ico == 2"></app-lista-chip>
+
+  </div>
+</div>

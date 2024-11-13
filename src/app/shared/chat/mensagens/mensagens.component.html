@@ -1,0 +1,163 @@
+<div class="chat">
+  <div class="chat-header clearfix">
+    <div class="chat-about">
+      <app-image-chat
+      imgP="{{ contato.IdWhatsApp }}"
+      self="{{ contato.ImageProfile }}"
+      telefone="{{ contato.Telefone }}"
+      [session]="configAtivo.Apelido"
+    ></app-image-chat>
+      <div >
+        <div class="chat-with">
+          {{ contato.NomeInformado?.trim().length > 0 ? contato.NomeInformado : contato.NomeRetornado }}
+
+        </div>
+
+        <div class="botoes">
+          <button
+            *ngIf="(this.contatoSelecao && TipoChat == '3') || TipoChat == '1'"
+            (click)="AbreSessao()"
+            mat-raised-button
+            color="primary"
+            style="line-height: 26px; margin: 5px"
+          >
+            Abre
+          </button>
+
+          <button
+            mat-button
+            *ngIf="
+              (this.contatoSelecao && TipoChat == '2') ||
+              (this.contatoSelecao && TipoChat == '1' && usr.Permissao == 1)
+            "
+            (click)="fechaSessao()"
+            mat-raised-button
+            color="primary"
+            style="line-height: 26px; margin: 5px"
+          >
+            Fecha
+          </button>
+          <button
+            *ngIf="
+              (this.contatoSelecao && TipoChat == '2') ||
+              (this.contatoSelecao && TipoChat == '1' && usr.Permissao == 1)
+            "
+            (click)="transfer()"
+            mat-raised-button
+            color="primary"
+            style="line-height: 26px; margin: 5px"
+          >
+            Transfere
+          </button>
+          <button
+            *ngIf="this.contatoSelecao && contatoSelecao.Lista"
+            (click)="DetalheCliente()"
+            mat-raised-button
+            color="primary"
+            style="line-height: 26px; margin: 5px"
+          >
+            Cliente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end chat-header -->
+  <mat-progress-bar mode="indeterminate" *ngIf=" (storage | async).loading "></mat-progress-bar>
+    <div class="chat-history">
+      <ul>
+        <li class="clearfix" *ngFor="let c of ConversaSelecao ">
+         <!-- *ngIf="this.currentsessao == c.Contatos_IdContato"-->
+          <app-message-ajust
+            telefone="{{this.contatoSelecao.Telefone}}"
+            EnvPor="{{
+              c.Usuario.NomeUsuario
+                ? c.Usuario.NomeUsuario
+                : c.Sentido == 'Saida'
+                ? 'Automático'
+                : ''
+            }}"
+            dataMsg="{{ c.Data | date: 'shortDate' }} {{
+              c.Data | date: 'shortTime'
+            }}"
+            [ImagemChat]="c.Anexo?.NomeArquivo"
+            [msgChat]="c.Mensagem"
+            [sentido]="c.Sentido"
+            [enviada]="c.Enviado"
+            [erro]="c.MensagemQueue?.Erro"
+            [menssagemerro]="c.MensagemQueue?.Mensagem"
+            [TipoAnexo]="c.Anexo.Tipo"
+            [ChipContato]="c.Config?.Apelido">
+          </app-message-ajust>
+        </li>
+      </ul>
+    </div>
+
+  <!-- end chat-history -->
+  <form
+    #myForm="ngForm"
+    (ngSubmit)="EnviaMsg(myForm)"
+    *ngIf="TipoChat == '2' || (TipoChat == '1' && usr.Permissao == 1)"
+  >
+    <div class="selecconf" style="background-color: #e2e2e2; font-weight: 400">
+      <span>Saida: </span>
+      <mat-select
+        class="select-mat"
+        style="
+          background-color: #dfd9d9;
+          font-weight: 550;
+          padding-left: 60px;
+          width: 70%;
+        "
+        name="selectChip"
+        id="selectChip"
+        (ngModel)="selectChip"
+
+        (ngModelChange)="selectChangeHandler($event)"
+        placeholder="Chip de Saida"
+      >
+        <mat-option>Selecione</mat-option>
+        <mat-option *ngFor="let item of conf" [value]="item.ID"
+          >{{ item.TelFormat }}
+        </mat-option>
+      </mat-select>
+      <img alt="Sel"
+        (click)="refresh()"
+        [src]="imageRefrsh"
+        style="padding-left: 40px; height: 20px; cursor: pointer"
+      />
+    </div>
+    <div class="chat-message clearfix">
+      <div>
+        <textarea
+          (keydown)="triggerFunction($event)"
+          tabindex="99999"
+          name="message-to-send"
+          [(ngModel)]="MsgText"
+          id="message-to-send"
+          placeholder="Digite Sua Mensagem"
+          rows="3"
+          style="width: 400px"
+        ></textarea>
+      </div>
+      <div class="btns">
+        <button tabindex="100000" type="submit" class="btn btn-primary manage">
+          <mat-icon>send</mat-icon>
+        </button>
+        <app-uploader
+          class="icup"
+          [contato]="contato"
+          (pathevent)="ImageUploased($event)"
+        ></app-uploader>
+      </div>
+    </div>
+    <div style="text-align: center; margin: 2px">
+      <span>
+        <a [href]="OutImg">{{ MsgAnexo }}</a>
+      </span>
+    </div>
+  </form>
+
+  <!-- end chat-message -->
+</div>
+<!-- end chat -->

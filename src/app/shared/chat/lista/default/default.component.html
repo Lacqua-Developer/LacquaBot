@@ -1,0 +1,60 @@
+
+<ul >
+  <cdk-virtual-scroll-viewport [itemSize]="20" class="example-viewport">
+
+  <li
+    #messageEl
+    class="clearfix"
+    *cdkVirtualFor="let c of contatos | myFilter: srcCont"
+
+    [attr.data-message-id]="c.IdContato"
+    [attr.data-message-tel]="c.Telefone"
+    (click)="onClick(messageEl)"
+    style="padding-bottom: 10px;">
+    <app-image-chat
+      imgP="{{ c.IdWhatsApp }}"
+      self="{{ c.ImageProfile }}"
+      telefone="{{ c.Telefone }}"
+      [session]="cfg.Apelido"
+    ></app-image-chat>
+    <div
+      class="about"
+      [matTooltip]="c.Status =='Bloqueado' ? 'Bloqueado' : ''"
+    >
+      <div
+        class="name"
+        [matTooltip]="'Telefone: ' + c.Telefone"
+        [ngStyle]="{'text-decoration': c.Status=='Bloqueado' ? 'line-through' : 'solid'}"
+      >
+        {{ c.NomeInformado ? c.NomeInformado : c.NomeRetornado }}
+      </div>
+      <div class="status">
+        <span><b>{{ c.QtdeNLido }}</b> Não Lidas</span>
+        <div
+          class="StSessao"
+          [matTooltip]="c.NomeUsuario"
+          *ngIf="TipoChat != '3'"
+        >
+          <mat-icon *ngIf="c.StatusSessao === 'Fechada'">lock</mat-icon>
+          <mat-icon
+            *ngIf="
+            c.StatusSessao === 'Aberta'
+            "
+            >lock_open</mat-icon
+          >
+          <mat-icon
+            style="color: #d12121"
+            *ngIf="
+              c.StatusSessao === 'Espera'
+            "
+            >lock_clock</mat-icon
+          >
+        </div>
+      </div>
+      <hr />
+    </div>
+  </li>
+
+</cdk-virtual-scroll-viewport>
+</ul>
+

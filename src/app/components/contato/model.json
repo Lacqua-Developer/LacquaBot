@@ -1,0 +1,51 @@
+{
+  "title": "Cadastro de Contatos",
+  "entity": "contato",
+  "api": {
+    "url": "http://localhost:58104/api/contato"
+  },
+  "filter": [
+    "NomeInformado"
+  ],
+  "fields": [
+    {
+      "name": "IdContato",
+      "label": "Id",
+      "isId": true,
+      "readonly": true,
+      "type": "number"
+    },
+    {
+      "name": "NomeInformado",
+      "type": "string",
+      "label": "Nome"
+    },
+    {
+      "name": "Documento",
+      "type": "string",
+      "label": "CPF"
+    },
+    {
+      "name": "Codigo",
+      "type": "string",
+      "label": "Chave"
+    },
+    {
+      "name": "Telefone",
+      "type": "string",
+      "label": "Telefone"
+    },
+    {
+      "name": "IdWhatsApp",
+      "type": "string",
+      "label": "IdWhatsApp"
+    },
+    {
+      "name": "Email",
+      "type": "string",
+      "label": "Email"
+    }
+
+  ]
+}
+

@@ -1,0 +1,82 @@
+<div>
+  <mat-toolbar class="header">
+    <div>
+      <a routerLink="/home">
+        <img src="assets/images/LacquaBots_Logo_transp.png" alt="logo" class="logo" />
+      </a>
+    </div>
+    <div class="titulo">
+      <img class="nomelogo" src="assets/images/LacquaBots_texto.png" alt="Nome" />
+      <h3></h3>
+    </div>
+    <div>
+      <div class="profile" *ngIf="usr.IdUsr">
+        <div>
+          <span> {{ usr.NomeUsuario }}</span>
+          <span [matTooltip]="configAtivo?.TelFormat">
+            {{ configAtivo?.Apelido }}
+          </span>
+        </div>
+
+        <button mat-icon-button (click)="snav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="contaniner">
+    <mat-sidenav
+      #snav
+
+      class="sidenav"
+      fixedInViewport="true"
+      fixedTopGap="64"
+    >
+      <mat-nav-list class="list">
+        <a mat-list-item class="list" routerLink="/home">
+          <mat-icon mat-list-icon>home</mat-icon> Home</a>
+        <a mat-list-item class="list" routerLink="/chat">Chat</a>
+        <a mat-list-item class="list" (click)="toggleMenuCad()"
+           *ngIf="this.usr.Permissao == 1" >Cadastros</a>
+        <mat-nav-list class="sidenav-submenu" *ngIf="!showMenuCad">
+          <a mat-list-item class="list"  *ngIf="this.usr.Permissao == 1" routerLink="/contato">Contatos</a>
+          <a mat-list-item class="list" *ngIf="this.usr.Permissao == 1" routerLink="/usuarios">Usuarios</a>
+          <a mat-list-item class="list" *ngIf="this.usr.Permissao == 1" routerLink="/textoSugestaos">Texto Sugestão</a>
+
+        </mat-nav-list>
+
+
+        <a mat-list-item class="list" (click)="toggleMenu()">
+          <mat-icon mat-list-icon>assessment</mat-icon> Relatorios</a>
+        <mat-nav-list class="sidenav-submenu" *ngIf="!showMenuRel">
+          <a mat-list-item *ngIf="this.usr.Permissao == 1" class="list">
+            <mat-icon mat-list-icon (click)="toggleMenuMan()"
+              >settings</mat-icon
+            >
+            Manutenção</a
+          >
+          <mat-nav-list class="sidenav-submenu" *ngIf="!showMenuMan">
+            <a
+              mat-list-item
+              class="list"
+              *ngIf="this.usr.Permissao == 1"
+              routerLink="/relatorio"
+              >Novo</a
+            >
+          </mat-nav-list>
+          <a
+            mat-list-item
+            *ngFor="let r of rel"
+            class="list"
+            routerLink="/report/{{r.IdRelatorio}}"
+            >{{ r.Nome }}</a
+          >
+        </mat-nav-list>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <app-login *ngIf="!this.logado"></app-login>
+      <router-outlet *ngIf="usr.IdUsr"></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

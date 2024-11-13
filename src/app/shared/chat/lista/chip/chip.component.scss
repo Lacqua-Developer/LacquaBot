@@ -1,0 +1,152 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
+
+
+example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: auto;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+
+$green: #86BB71;
+$blue: #94C2ED;
+$orange: #E38968;
+$gray: #92959E;
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+.tab-icon{
+  width: 20px;
+  color: #5c4a4a;
+  cursor:pointer;
+}
+
+.btnAdd{
+  min-width: 20px;
+  padding: 5px;
+  margin-left: 2px;
+}
+.gridtela{
+  margin-top: 20px;
+}
+
+.people-list {
+  padding-top: 50px;
+  width:240px;
+  float: left;
+
+  .ContatoImage{
+     height: 50px;
+     border-radius: 10px;
+  }
+
+  .search {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    color: white;
+  }
+
+  .list{
+    height:80vh;
+    overflow-y: auto;
+    cursor:pointer;
+  }
+
+
+  ul {
+    padding: 5px !important;
+    height: 770px;
+    list-style-type: none;
+
+
+
+    li {
+
+      padding-bottom: 20px !important;
+
+    }
+  }
+
+  img {
+    float: left;
+  }
+
+  .about {
+    float: left;
+    margin-top: 8px;
+    width: 140px;
+    white-space: nowrap;
+  }
+
+  .about {
+    padding-left: 3px;
+
+  }
+  .StSessao{
+    width: 12px;
+    font-size: 8px;
+  }
+
+  .status {
+    color: $gray;
+    width: 135px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+
+}
+
+
+.online, .offline, .me {
+    margin-right: 3px;
+    font-size: 10px;
+  }
+
+.online {
+  color: $green;
+}
+
+.offline {
+  color: $orange;
+}
+
+.me {
+  color: $blue;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.float-right {
+  float: right;
+}
+
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+

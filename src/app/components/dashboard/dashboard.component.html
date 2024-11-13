@@ -1,0 +1,31 @@
+<div class="grid-container">
+  <div>
+  <h1 class="mat-h1">Dashboard</h1>
+</div>
+  <mat-grid-list cols="{{colsDash}}" rowHeight="350px" >
+    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{card.title}}
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expand</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <app-alertas *ngIf="Alertas ==  card.title"></app-alertas>
+          <app-config *ngIf="Nros == card.title"></app-config>
+          <app-sessoes *ngIf="Sessoes == card.title"></app-sessoes>
+
+          <app-contatos-dash *ngIf="Contatos == card.title"></app-contatos-dash>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,76 @@
+<div class="mat-elevation-z4">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+          [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <td mat-cell *matCellDef="let row">{{ row.ID }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let row">{{ row.Apelido }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Telefone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefone</th>
+      <td mat-cell *matCellDef="let row">{{ row.Telefone }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>StatusConeccao</th>
+      <td
+        mat-cell
+        *matCellDef="let row"
+        [style.color]="row.StatusConeccao ? 'green' : 'red'"
+        [matTooltip]="row.StatusChip">
+        {{ row.StatusConeccao ? "Ativo" : "Inativo" }}
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Acoes">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ações</th>
+      <td mat-cell *matCellDef="let row">
+        <mat-select [ngModel]="NroSaida" (ngModelChange)="selectChangeHandler($event,row.Apelido)">
+          <mat-option value="1">Ativa</mat-option>
+          <mat-option value="2">Desativa</mat-option>
+          <mat-option value="3">QRCode</mat-option>
+          <mat-option value="4">Atualiza</mat-option>
+          <mat-option value="5">Contatos</mat-option>
+        </mat-select>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    #paginator
+    [length]="dataSource?.data.length"
+    [pageIndex]="0"
+    [pageSize]="3">
+  </mat-paginator>
+</div>
